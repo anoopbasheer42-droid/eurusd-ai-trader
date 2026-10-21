@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EUR/USD AI Auto-Trader</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0a0f18;
+  --panel: #121c2b;
+  --border: #26364a;
+  --text: #edf3fc;
+  --muted: #9aabc1;
+  --green: #28d69a;
+  --red: #ff647c;
+  --blue: #62a9ff;
+  --gold: #ffd166;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, sans-serif;
+}
+header {
+  padding: 20px;
+  background: #101827;
+  border-bottom: 1px solid var(--border);
+}
+h1 { font-size: 22px; margin: 0 0 5px; }
+h2 { font-size: 16px; margin-top: 0; }
+.subtitle, .muted { color: var(--muted); }
+main { max-width: 1200px; margin: auto; padding: 16px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.price { font-size: 28px; font-weight: 750; }
+.pill {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 4px 9px;
+  font-size: 12px;
+  background: #26364a;
+}
+.green { color: var(--green); }
+.red { color: var(--red); }
+.gold { color: var(--gold); }
+.blue { color: var(--blue); }
+label { display: block; margin: 12px 0 5px; color: var(--muted); }
+input, select, button {
+  font: inherit;
+  border-radius: 8px;
+  padding: 10px;
+}
+input, select {
+  width: 100%;
+  color: var(--text);
+  background: #0b1320;
+  border: 1px solid var(--border);
+}
+button {
+  border: 0;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--blue);
+  color: #07101b;
+}
+button.secondary { background: #26364a; color: var(--text); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.notice {
+  padding: 12px;
+  background: #332a16;
+  color: #ffe0a0;
+  border: 1px solid #64502a;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+table { width: 100%; border-collapse: collapse; }
+th, td {
+  padding: 10px 7px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+th { color: var(--muted); font-size: 12px; }
+.table-wrap { overflow-x: auto; }
+.status { font-weight: 700; }
+footer { padding: 20px; text-align: center; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎯 EUR/USD AI AUTO-TRADER</h1>
+  <div class="subtitle">Sniper Engine · Elite Scalper · Risk & Execution Gate</div>
+</header>
+
+<main>
+  <div class="notice">
+    DEMO DASHBOARD — No live market feed or broker connection is active.
+    All sample values are illustrative. No orders are sent.
+  </div>
+
+  <section class="grid">
+    <div class="card">
+      <div class="muted">EUR/USD PRICE</div>
+      <div class="price" id="price">—</div>
+      <span class="pill gold" id="marketStatus">Waiting for data</span>
+      <p class="muted" id="priceTime">No live feed connected</p>
+    </div>
+    <div class="card">
+      <div class="muted">ACCOUNT BALANCE</div>
+      <div class="price" id="balance">—</div>
+      <p class="muted">Connect a supported account-data source.</p>
+    </div>
+    <div class="card">
+      <div class="muted">TODAY'S RESULTS</div>
+      <div class="price" id="pnl">—</div>
+      <p class="muted" id="record">No trades recorded</p>
+    </div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>🎯 Engine 1 — A+ Sniper</h2>
+      <span class="pill gold">NOT CONNECTED</span>
+      <p>Designed for selective, high-quality setups.</p>
+      <p class="muted">Timeframes: H4 · H1 · M15 · M5</p>
+      <p>Signal: <strong id="sniperSignal">WAITING FOR DATA</strong></p>
+    </div>
+    <div class="card">
+      <h2>⚡ Engine 2 — Elite Scalper</h2>
+      <span class="pill gold">NOT CONNECTED</span>
+      <p>Designed to evaluate intraday opportunities.</p>
+      <p class="muted">Requires verified market data and strategy rules.</p>
+      <p>Signal: <strong id="scalpSignal">WAITING FOR DATA</strong></p>
+    </div>
+    <div class="card">
+      <h2>🛡️ Engine 3 — Risk Gate</h2>
+      <span class="pill gold">SIMULATION ONLY</span>
+      <p>Validates proposed trades before execution.</p>
+      <p>Decision: <strong id="gateSignal">STAY OUT</strong></p>
+      <p class="muted">No live orders can be sent from this page.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Risk Manager</h2>
+    <div class="grid">
+      <div>
+        <label for="capital">Demo balance (account currency)</label>
+        <input id="capital" type="number" min="0" step="any" value="100">
+      </div>
+      <div>
+        <label for="risk">Risk per trade (%)</label>
+        <input id="risk" type="number" min="0.1" max="1" step="0.1" value="0.5">
+      </div>
+      <div>
+        <label for="sl">Stop-loss distance (pips)</label>
+        <input id="sl" type="number" min="1" step="1" value="10">
+      </div>
+      <div>
+        <label for="rr">Reward-to-risk ratio</label>
+        <select id="rr">
+          <option value="2">1:2</option>
+          <option value="3">1:3</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="calculate">Calculate risk</button>
+    </div>
+    <div id="riskResult" class="notice" aria-live="polite">
+      Illustrative calculator only. Verify pip value and contract specifications with your broker.
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Trade Journal</h2>
+    <p class="muted">Manually record simulated trades. These entries do not come from Octa.</p>
+    <div class="grid">
+      <div>
+        <label for="direction">Direction</label>
+        <select id="direction">
+          <option>BUY</option>
+          <option>SELL</option>
+        </select>
+      </div>
+      <div>
+        <label for="outcome">Outcome</label>
+        <select id="outcome">
+          <option value="win">Win</option>
+          <option value="loss">Loss</option>
+          <option value="open">Open / undecided</option>
+        </select>
+      </div>
+      <div>
+        <label for="result">Result (account currency)</label>
+        <input id="result" type="number" step="any" value="1">
+      </div>
+    </div>
+    <div class="actions">
+      <button id="recordTrade">Record simulated trade</button>
+      <button id="clearTrades" class="secondary">Clear journal</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Time</th><th>Direction</th><th>Outcome</th><th>Result</th></tr>
+        </thead>
+        <tbody id="trades">
+          <tr><td colspan="4" class="muted">No trades recorded yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    Prototype v1 · Not connected to a broker · No automated trading
+  </footer>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+let trades = [];
+
+$("calculate").addEventListener("click", () => {
+  const capital = Number($("capital").value);
+  const riskPct = Number($("risk").value);
+  const sl = Number($("sl").value);
+  const rr = Number($("rr").value);
+
+  if (!Number.isFinite(capital) || capital <= 0 ||
+      !Number.isFinite(riskPct) || riskPct <= 0 || riskPct > 1 ||
+      !Number.isFinite(sl) || sl <= 0) {
+    $("riskResult").textContent =
+      "Check your inputs. Risk must be greater than 0% and no more than 1%.";
+    return;
+  }
+
+  const riskAmount = capital * riskPct / 100;
+  const targetAmount = riskAmount * rr;
+
+  $("riskResult").textContent =
+    `Illustrative maximum planned loss: ${riskAmount.toFixed(2)} ` +
+    `account-currency units. Target at 1:${rr}: ${targetAmount.toFixed(2)}. ` +
+    `This does not calculate lot size; broker pip value, account currency, ` +
+    `spread, commission and slippage must be included.`;
+});
+
+function renderTrades() {
+  const body = $("trades");
+  body.replaceChildren();
+
+  if (!trades.length) {
+    const row = body.insertRow();
+    const cell = row.insertCell();
+    cell.colSpan = 4;
+    cell.textContent = "No trades recorded yet.";
+    cell.className = "muted";
+    $("pnl").textContent = "—";
+    $("record").textContent = "No trades recorded";
+    return;
+  }
+
+  let pnl = 0, wins = 0, losses = 0;
+
+  trades.forEach(t => {
+    if (t.outcome !== "open") {
+      pnl += t.result;
+      if (t.outcome === "win") wins++;
+      if (t.outcome === "loss") losses++;
+    }
+
+    const row = body.insertRow();
+    [t.time, t.direction, t.outcome.toUpperCase(),
+      t.outcome === "open" ? "—" : t.result.toFixed(2)
+    ].forEach(value => {
+      row.insertCell().textContent = value;
+    });
+  });
+
+  $("pnl").textContent = pnl.toFixed(2);
+  $("pnl").className = "price " + (pnl >= 0 ? "green" : "red");
+  $("record").textContent = `${wins} wins · ${losses} losses · ${trades.length} recorded`;
+}
+
+$("recordTrade").addEventListener("click", () => {
+  const result = Number($("result").value);
+  const outcome = $("outcome").value;
+
+  if (!Number.isFinite(result) ||
+      (outcome === "win" && result < 0) ||
+      (outcome === "loss" && result > 0)) {
+    alert("For a win, enter a non-negative result. For a loss, enter a non-positive result.");
+    return;
+  }
+
+  trades.unshift({
+    time: new Date().toLocaleString(),
+    direction: $("direction").value,
+    outcome,
+    result
+  });
+
+  renderTrades();
+});
+
+$("clearTrades").addEventListener("click", () => {
+  if (confirm("Clear all simulated journal entries?")) {
+    trades = [];
+    renderTrades();
+  }
+});
+</script>
+</body>
+</html>
