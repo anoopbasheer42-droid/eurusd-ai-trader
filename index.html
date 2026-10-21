@@ -2,327 +2,217 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>EUR/USD AI Auto-Trader</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07111f">
+<title>EUR/USD AI Trader — Modular Single File</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg: #0a0f18;
-  --panel: #121c2b;
-  --border: #26364a;
-  --text: #edf3fc;
-  --muted: #9aabc1;
-  --green: #28d69a;
-  --red: #ff647c;
-  --blue: #62a9ff;
-  --gold: #ffd166;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--text);
-  font: 14px/1.5 system-ui, sans-serif;
-}
-header {
-  padding: 20px;
-  background: #101827;
-  border-bottom: 1px solid var(--border);
-}
-h1 { font-size: 22px; margin: 0 0 5px; }
-h2 { font-size: 16px; margin-top: 0; }
-.subtitle, .muted { color: var(--muted); }
-main { max-width: 1200px; margin: auto; padding: 16px; }
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 12px;
-}
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-.price { font-size: 28px; font-weight: 750; }
-.pill {
-  display: inline-block;
-  border-radius: 20px;
-  padding: 4px 9px;
-  font-size: 12px;
-  background: #26364a;
-}
-.green { color: var(--green); }
-.red { color: var(--red); }
-.gold { color: var(--gold); }
-.blue { color: var(--blue); }
-label { display: block; margin: 12px 0 5px; color: var(--muted); }
-input, select, button {
-  font: inherit;
-  border-radius: 8px;
-  padding: 10px;
-}
-input, select {
-  width: 100%;
-  color: var(--text);
-  background: #0b1320;
-  border: 1px solid var(--border);
-}
-button {
-  border: 0;
-  font-weight: 700;
-  cursor: pointer;
-  background: var(--blue);
-  color: #07101b;
-}
-button.secondary { background: #26364a; color: var(--text); }
-button:disabled { opacity: .5; cursor: not-allowed; }
-.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.notice {
-  padding: 12px;
-  background: #332a16;
-  color: #ffe0a0;
-  border: 1px solid #64502a;
-  border-radius: 8px;
-  margin: 12px 0;
-}
-table { width: 100%; border-collapse: collapse; }
-th, td {
-  padding: 10px 7px;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-th { color: var(--muted); font-size: 12px; }
-.table-wrap { overflow-x: auto; }
-.status { font-weight: 700; }
-footer { padding: 20px; text-align: center; color: var(--muted); }
+:root{--bg:#07111f;--panel:#0d1a2b;--panel2:#102239;--line:#203650;--text:#e8f0fb;--muted:#9ab0c9;--green:#37d6a0;--red:#ff647c;--amber:#f4c15d;--blue:#65aaff;--purple:#b69cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#10233a 0,#07111f 55%);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:22px max(16px,calc((100% - 1400px)/2));border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#07111fe8;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:12px}.logo{height:42px;width:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#38d6a0,#4c8dff);color:#06111d;font-weight:900;font-size:19px}.brand h1{margin:0;font-size:18px;letter-spacing:.4px}.brand small{color:var(--muted)}.pill{padding:6px 10px;border:1px solid var(--line);border-radius:99px;color:var(--amber);font-size:12px;font-weight:700}
+main{max-width:1400px;margin:auto;padding:20px 16px 40px}.notice{border:1px solid #69592a;background:#241f12;color:#f6dda0;padding:12px 14px;border-radius:12px;margin-bottom:18px}
+.grid{display:grid;gap:14px}.stats{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:14px}.layout{grid-template-columns:minmax(0,1.55fr) minmax(300px,.85fr);align-items:start}.engines{grid-template-columns:repeat(3,minmax(0,1fr));margin:14px 0}.bottom{grid-template-columns:1fr 1fr;margin-top:14px}
+.card{background:linear-gradient(160deg,#102139,#0b1727);border:1px solid var(--line);border-radius:16px;padding:16px;min-width:0;box-shadow:0 8px 24px #00000012}.card h2,.card h3{margin:0 0 12px}.card h2{font-size:16px}.card h3{font-size:14px}.label{color:var(--muted);font-size:12px}.big{font-size:25px;font-weight:800;letter-spacing:.3px;margin-top:4px}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.muted{color:var(--muted)}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row+.row{margin-top:10px}.tag{border-radius:7px;padding:4px 7px;font-size:11px;font-weight:800;letter-spacing:.4px;background:#1c3047;color:var(--muted)}.tag.buy{color:var(--green);background:#10392f}.tag.sell{color:var(--red);background:#401d2a}.tag.wait{color:var(--amber);background:#3a301a}
+.chart-wrap{height:290px;position:relative;margin-top:8px}.chart-wrap canvas{width:100%;height:100%;display:block}.timeframes{display:flex;gap:7px;flex-wrap:wrap}.tf{background:#0a1625;color:var(--muted);border:1px solid var(--line);padding:7px 10px;border-radius:8px}.tf.active{background:#183452;color:#fff;border-color:#4778a8}
+.engine{position:relative;overflow:hidden}.engine:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--blue)}.engine:nth-child(2):before{background:var(--purple)}.engine:nth-child(3):before{background:var(--amber)}.engine .signal{font-size:20px;font-weight:900;margin:7px 0}.engine .reason{color:var(--muted);font-size:12px;min-height:36px}.engine button{width:100%;margin-top:12px}
+button{cursor:pointer;border:1px solid var(--line);border-radius:9px;background:#183452;color:var(--text);padding:9px 12px;font-weight:700}button:hover{filter:brightness(1.15)}button.primary{background:linear-gradient(135deg,#25b98a,#2589d7);border:0;color:#04131b}button.danger{background:#401d2a;color:#ffdbe1}button:disabled{opacity:.45;cursor:not-allowed}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}input,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;background:#071321;color:var(--text);outline:none}input:focus,select:focus{border-color:var(--blue)}.calc{background:#091523;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px}.calc strong{font-size:18px}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--line);white-space:nowrap}th{color:var(--muted);font-weight:600}td{max-width:200px;overflow:hidden;text-overflow:ellipsis}.table-wrap{overflow:auto}.empty{text-align:center;padding:24px;color:var(--muted)}.checks{display:grid;gap:9px}.check{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #1b2d42}.status{font-weight:800;font-size:11px}.status.pass{color:var(--green)}.status.fail{color:var(--red)}.status.pending{color:var(--amber)}.controls{display:flex;gap:8px;flex-wrap:wrap}.foot{margin-top:20px;text-align:center;color:var(--muted);font-size:11px}
+@media(max-width:950px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.layout{grid-template-columns:1fr}.engines{grid-template-columns:1fr}.bottom{grid-template-columns:1fr}}
+@media(max-width:480px){header{position:static}.stats{gap:9px}.card{padding:13px}.big{font-size:21px}.chart-wrap{height:230px}.form-grid{grid-template-columns:1fr 1fr}main{padding:12px 10px 28px}}
 </style>
 </head>
 <body>
-
 <header>
-  <h1>🎯 EUR/USD AI AUTO-TRADER</h1>
-  <div class="subtitle">Sniper Engine · Elite Scalper · Risk & Execution Gate</div>
+  <div class="brand"><div class="logo">€$</div><div><h1>EUR/USD AI TRADER</h1><small>Modular strategy dashboard · single-file build</small></div></div>
+  <div class="row" style="justify-content:flex-end;flex-wrap:wrap"><span class="pill">DEMO / SIMULATION ONLY</span><span id="clock" class="muted"></span></div>
 </header>
-
 <main>
-  <div class="notice">
-    DEMO DASHBOARD — No live market feed or broker connection is active.
-    All sample values are illustrative. No orders are sent.
-  </div>
+  <div class="notice"><strong>Prototype safety:</strong> This version uses simulated candles and simulated trades only. It does not fetch live prices or connect to Octa/MT5, and it cannot place orders. Never paste an API key or broker password into this public HTML file.</div>
 
-  <section class="grid">
+  <section class="grid stats">
+    <div class="card"><div class="label">EUR/USD simulated price</div><div class="big" id="price">1.08500</div><div class="label" id="priceChange">SIMULATED FEED</div></div>
+    <div class="card"><div class="label">System verdict</div><div class="big amber" id="verdict">WAIT</div><div class="label" id="verdictDetail">Waiting for strategy checks</div></div>
+    <div class="card"><div class="label">Demo equity (simulated)</div><div class="big" id="equity">$1,000.00</div><div class="label">Not your broker balance</div></div>
+    <div class="card"><div class="label">Recorded outcomes</div><div class="big" id="record">0W / 0L</div><div class="label" id="winrate">Win rate: —</div></div>
+  </section>
+
+  <section class="grid layout">
     <div class="card">
-      <div class="muted">EUR/USD PRICE</div>
-      <div class="price" id="price">—</div>
-      <span class="pill gold" id="marketStatus">Waiting for data</span>
-      <p class="muted" id="priceTime">No live feed connected</p>
+      <div class="row"><h2>EUR/USD Candles</h2><div class="timeframes"><button class="tf active" data-tf="M5">M5</button><button class="tf" data-tf="M15">M15</button><button class="tf" data-tf="H1">H1</button><button class="tf" data-tf="H4">H4</button></div></div>
+      <div class="chart-wrap"><canvas id="chart" aria-label="Simulated EUR/USD candlestick chart"></canvas></div>
+      <div class="row" style="margin-top:10px;flex-wrap:wrap"><span class="label">Chart status: <strong class="amber">SIMULATED</strong></span><span class="label" id="candleMeta">60 generated candles</span></div>
     </div>
     <div class="card">
-      <div class="muted">ACCOUNT BALANCE</div>
-      <div class="price" id="balance">—</div>
-      <p class="muted">Connect a supported account-data source.</p>
-    </div>
-    <div class="card">
-      <div class="muted">TODAY'S RESULTS</div>
-      <div class="price" id="pnl">—</div>
-      <p class="muted" id="record">No trades recorded</p>
+      <h2>Risk Manager</h2>
+      <div class="form-grid">
+        <div><label for="balance">Simulated balance ($)</label><input id="balance" type="number" min="1" value="1000"></div>
+        <div><label for="risk">Risk per trade (%)</label><input id="risk" type="number" min="0.1" max="1" step="0.1" value="0.5"></div>
+        <div><label for="entry">Entry price</label><input id="entry" type="number" step="0.00001" value="1.08500"></div>
+        <div><label for="stop">Stop-loss price</label><input id="stop" type="number" step="0.00001" value="1.08400"></div>
+        <div><label for="target">Take-profit price</label><input id="target" type="number" step="0.00001" value="1.08700"></div>
+        <div><label for="side">Direction</label><select id="side"><option value="BUY">BUY</option><option value="SELL">SELL</option></select></div>
+      </div>
+      <div class="calc">
+        <div class="row"><span class="label">Risk amount</span><strong id="riskAmount">$5.00</strong></div>
+        <div class="row"><span class="label">Risk / reward</span><strong id="rr">3.00R</strong></div>
+        <div class="row"><span class="label">Position size (approx. standard lots)</span><strong id="lots">0.05</strong></div>
+        <div class="row"><span class="label">Validation</span><strong id="riskValidation" class="green">VALID</strong></div>
+        <p class="label">Approximation assumes EUR/USD pip value ≈ $10 per standard lot and ignores commission, spread, slippage and currency conversion. Verify broker contract specifications.</p>
+      </div>
     </div>
   </section>
 
-  <section class="grid">
-    <div class="card">
-      <h2>🎯 Engine 1 — A+ Sniper</h2>
-      <span class="pill gold">NOT CONNECTED</span>
-      <p>Designed for selective, high-quality setups.</p>
-      <p class="muted">Timeframes: H4 · H1 · M15 · M5</p>
-      <p>Signal: <strong id="sniperSignal">WAITING FOR DATA</strong></p>
-    </div>
-    <div class="card">
-      <h2>⚡ Engine 2 — Elite Scalper</h2>
-      <span class="pill gold">NOT CONNECTED</span>
-      <p>Designed to evaluate intraday opportunities.</p>
-      <p class="muted">Requires verified market data and strategy rules.</p>
-      <p>Signal: <strong id="scalpSignal">WAITING FOR DATA</strong></p>
-    </div>
-    <div class="card">
-      <h2>🛡️ Engine 3 — Risk Gate</h2>
-      <span class="pill gold">SIMULATION ONLY</span>
-      <p>Validates proposed trades before execution.</p>
-      <p>Decision: <strong id="gateSignal">STAY OUT</strong></p>
-      <p class="muted">No live orders can be sent from this page.</p>
-    </div>
+  <section class="grid engines">
+    <div class="card engine"><div class="row"><h2>Engine 1</h2><span class="tag">A+ SNIPER</span></div><div class="signal amber" id="sniperSignal">WAIT</div><div class="reason" id="sniperReason">Requires higher-timeframe alignment and confirmed entry conditions.</div><div class="row"><span class="label">Setup score</span><strong id="sniperScore">—</strong></div><button onclick="explainEngine('sniper')">View checks</button></div>
+    <div class="card engine"><div class="row"><h2>Engine 2</h2><span class="tag">ELITE SCALPER</span></div><div class="signal amber" id="scalpSignal">WAIT</div><div class="reason" id="scalpReason">Looks for short-term momentum with structure confirmation.</div><div class="row"><span class="label">Setup score</span><strong id="scalpScore">—</strong></div><button onclick="explainEngine('scalp')">View checks</button></div>
+    <div class="card engine"><div class="row"><h2>Engine 3</h2><span class="tag">TRADE GATE</span></div><div class="signal amber" id="gateSignal">BLOCKED</div><div class="reason" id="gateReason">Gate blocks any setup that fails risk or confirmation rules.</div><div class="row"><span class="label">Gate result</span><strong id="gateScore">BLOCKED</strong></div><button onclick="explainEngine('gate')">View checks</button></div>
   </section>
 
-  <section class="card">
-    <h2>Risk Manager</h2>
-    <div class="grid">
-      <div>
-        <label for="capital">Demo balance (account currency)</label>
-        <input id="capital" type="number" min="0" step="any" value="100">
-      </div>
-      <div>
-        <label for="risk">Risk per trade (%)</label>
-        <input id="risk" type="number" min="0.1" max="1" step="0.1" value="0.5">
-      </div>
-      <div>
-        <label for="sl">Stop-loss distance (pips)</label>
-        <input id="sl" type="number" min="1" step="1" value="10">
-      </div>
-      <div>
-        <label for="rr">Reward-to-risk ratio</label>
-        <select id="rr">
-          <option value="2">1:2</option>
-          <option value="3">1:3</option>
-        </select>
-      </div>
-    </div>
-    <div class="actions">
-      <button id="calculate">Calculate risk</button>
-    </div>
-    <div id="riskResult" class="notice" aria-live="polite">
-      Illustrative calculator only. Verify pip value and contract specifications with your broker.
-    </div>
+  <section class="grid bottom">
+    <div class="card"><h2>Trade validation checklist</h2><div class="checks" id="checks"></div><div class="controls" style="margin-top:14px"><button class="primary" id="simulateTrade">Record simulated trade</button><button id="refresh">Generate new simulated candles</button><button class="danger" id="reset">Reset simulated history</button></div><p class="label">Recording a trade here only updates this browser's local simulation. It does not send an order to a broker.</p></div>
+    <div class="card"><div class="row"><h2>System notes</h2><span class="tag">LOCAL ONLY</span></div><div id="notes" class="muted">Starting prototype…</div><hr style="border:0;border-top:1px solid var(--line);margin:14px 0"><h3>Connection status</h3><div class="check"><span>Market feed</span><span class="status pending">SIMULATED ONLY</span></div><div class="check"><span>Twelve Data API</span><span class="status pending">NOT CONNECTED</span></div><div class="check"><span>Octa / MT5</span><span class="status pending">NOT CONNECTED</span></div><div class="check"><span>24/7 execution</span><span class="status pending">NOT CONFIGURED</span></div></div>
   </section>
 
-  <section class="card">
-    <h2>Trade Journal</h2>
-    <p class="muted">Manually record simulated trades. These entries do not come from Octa.</p>
-    <div class="grid">
-      <div>
-        <label for="direction">Direction</label>
-        <select id="direction">
-          <option>BUY</option>
-          <option>SELL</option>
-        </select>
-      </div>
-      <div>
-        <label for="outcome">Outcome</label>
-        <select id="outcome">
-          <option value="win">Win</option>
-          <option value="loss">Loss</option>
-          <option value="open">Open / undecided</option>
-        </select>
-      </div>
-      <div>
-        <label for="result">Result (account currency)</label>
-        <input id="result" type="number" step="any" value="1">
-      </div>
-    </div>
-    <div class="actions">
-      <button id="recordTrade">Record simulated trade</button>
-      <button id="clearTrades" class="secondary">Clear journal</button>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>Time</th><th>Direction</th><th>Outcome</th><th>Result</th></tr>
-        </thead>
-        <tbody id="trades">
-          <tr><td colspan="4" class="muted">No trades recorded yet.</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </section>
-
-  <footer>
-    Prototype v1 · Not connected to a broker · No automated trading
-  </footer>
+  <section class="card" style="margin-top:14px"><div class="row"><h2>Simulated trade journal</h2><span class="label">Saved in this browser</span></div><div class="table-wrap"><table><thead><tr><th>Time (IST)</th><th>Side</th><th>Entry</th><th>SL</th><th>TP</th><th>Result</th><th>P/L (sim.)</th><th>Reason</th></tr></thead><tbody id="journal"><tr><td colspan="8" class="empty">No simulated trades recorded.</td></tr></tbody></table></div></section>
+  <div class="foot">Educational prototype · simulated data · no financial advice · no broker connection · use demo testing before considering live trading.</div>
 </main>
-
 <script>
+"use strict";
 const $ = id => document.getElementById(id);
-let trades = [];
+const STORAGE_KEY = "eurusd_single_file_sim_v1";
+let timeframe = "M5", candles = [], current = 1.08500, engines = {}, lastAnalysis = null;
+let state = loadState();
 
-$("calculate").addEventListener("click", () => {
-  const capital = Number($("capital").value);
-  const riskPct = Number($("risk").value);
-  const sl = Number($("sl").value);
-  const rr = Number($("rr").value);
-
-  if (!Number.isFinite(capital) || capital <= 0 ||
-      !Number.isFinite(riskPct) || riskPct <= 0 || riskPct > 1 ||
-      !Number.isFinite(sl) || sl <= 0) {
-    $("riskResult").textContent =
-      "Check your inputs. Risk must be greater than 0% and no more than 1%.";
-    return;
-  }
-
-  const riskAmount = capital * riskPct / 100;
-  const targetAmount = riskAmount * rr;
-
-  $("riskResult").textContent =
-    `Illustrative maximum planned loss: ${riskAmount.toFixed(2)} ` +
-    `account-currency units. Target at 1:${rr}: ${targetAmount.toFixed(2)}. ` +
-    `This does not calculate lot size; broker pip value, account currency, ` +
-    `spread, commission and slippage must be included.`;
-});
-
-function renderTrades() {
-  const body = $("trades");
-  body.replaceChildren();
-
-  if (!trades.length) {
-    const row = body.insertRow();
-    const cell = row.insertCell();
-    cell.colSpan = 4;
-    cell.textContent = "No trades recorded yet.";
-    cell.className = "muted";
-    $("pnl").textContent = "—";
-    $("record").textContent = "No trades recorded";
-    return;
-  }
-
-  let pnl = 0, wins = 0, losses = 0;
-
-  trades.forEach(t => {
-    if (t.outcome !== "open") {
-      pnl += t.result;
-      if (t.outcome === "win") wins++;
-      if (t.outcome === "loss") losses++;
-    }
-
-    const row = body.insertRow();
-    [t.time, t.direction, t.outcome.toUpperCase(),
-      t.outcome === "open" ? "—" : t.result.toFixed(2)
-    ].forEach(value => {
-      row.insertCell().textContent = value;
-    });
-  });
-
-  $("pnl").textContent = pnl.toFixed(2);
-  $("pnl").className = "price " + (pnl >= 0 ? "green" : "red");
-  $("record").textContent = `${wins} wins · ${losses} losses · ${trades.length} recorded`;
+function loadState(){
+  try { const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); if(saved && Array.isArray(saved.trades)) return saved; } catch(e){}
+  return {balance:1000,trades:[]};
 }
-
-$("recordTrade").addEventListener("click", () => {
-  const result = Number($("result").value);
-  const outcome = $("outcome").value;
-
-  if (!Number.isFinite(result) ||
-      (outcome === "win" && result < 0) ||
-      (outcome === "loss" && result > 0)) {
-    alert("For a win, enter a non-negative result. For a loss, enter a non-positive result.");
-    return;
+function saveState(){ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch(e){} }
+function istTime(){return new Date().toLocaleString("en-IN",{timeZone:"Asia/Kolkata",hour12:false});}
+function tickClock(){ $("clock").textContent = istTime()+" IST"; }
+function rand(n){return (Math.random()-.5)*n;}
+function generateCandles(){
+  candles=[]; let p=1.08500;
+  for(let i=0;i<60;i++){
+    let o=p, c=o+rand(.0010), h=Math.max(o,c)+Math.random()*.00035, l=Math.min(o,c)-Math.random()*.00035;
+    candles.push({o,h,l,c}); p=c;
   }
-
-  trades.unshift({
-    time: new Date().toLocaleString(),
-    direction: $("direction").value,
-    outcome,
-    result
+  current=p; $("price").textContent=current.toFixed(5); $("priceChange").textContent="Simulated change: "+((candles.at(-1).c-candles[0].o)*10000).toFixed(1)+" pips";
+  $("candleMeta").textContent=`60 generated ${timeframe} candles`; renderChart(); analyse();
+}
+function renderChart(){
+  const canvas=$("chart"), rect=canvas.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+  canvas.width=Math.max(300,Math.floor(rect.width*dpr)); canvas.height=Math.max(180,Math.floor(rect.height*dpr));
+  const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);
+  const w=canvas.width/dpr,h=canvas.height/dpr;
+  ctx.clearRect(0,0,w,h);ctx.fillStyle="#091523";ctx.fillRect(0,0,w,h);
+  if(!candles.length)return;
+  const min=Math.min(...candles.map(c=>c.l)),max=Math.max(...candles.map(c=>c.h)),pad=18;
+  const y=p=>pad+(max-p)/(max-min||.001)*(h-pad*2);
+  ctx.strokeStyle="#1a2b40";ctx.lineWidth=1;
+  for(let i=0;i<5;i++){let yy=pad+i*(h-pad*2)/4;ctx.beginPath();ctx.moveTo(0,yy);ctx.lineTo(w,yy);ctx.stroke();}
+  ctx.font="10px system-ui";ctx.fillStyle="#8299b4";
+  for(let i=0;i<5;i++){let p=max-i*(max-min)/4;ctx.fillText(p.toFixed(5),4,pad+i*(h-pad*2)/4-3);}
+  const plotLeft=56,plotW=w-plotLeft-6,slot=plotW/candles.length,cw=Math.max(2,slot*.55);
+  candles.forEach((c,i)=>{const x=plotLeft+i*slot+slot/2,up=c.c>=c.o;ctx.strokeStyle=up?"#37d6a0":"#ff647c";ctx.fillStyle=ctx.strokeStyle;ctx.beginPath();ctx.moveTo(x,y(c.h));ctx.lineTo(x,y(c.l));ctx.stroke();let top=y(Math.max(c.o,c.c)),bot=y(Math.min(c.o,c.c));ctx.fillRect(x-cw/2,top,cw,Math.max(1,bot-top));});
+  ctx.strokeStyle="#f4c15d";ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(plotLeft,y(current));ctx.lineTo(w,y(current));ctx.stroke();ctx.setLineDash([]);
+}
+function ema(values,period){let k=2/(period+1),out=[];values.forEach((v,i)=>out.push(i===0?v:v*k+out[i-1]*(1-k)));return out;}
+function calcRSI(values,period=14){if(values.length<=period)return 50;let gains=0,losses=0;for(let i=values.length-period;i<values.length;i++){let d=values[i]-values[i-1];if(d>0)gains+=d;else losses-=d;}if(losses===0)return 100;return 100-100/(1+gains/losses);}
+function analyse(){
+  const closes=candles.map(c=>c.c), e9=ema(closes,9),e20=ema(closes,20), rsi=calcRSI(closes);
+  const last=candles.at(-1), prev=candles.at(-2), bullish=e9.at(-1)>e20.at(-1), bearish=e9.at(-1)<e20.at(-1);
+  const body=Math.abs(last.c-last.o), range=last.h-last.l||.00001, goodCandle=body/range>.45;
+  const trend=bullish?"BULLISH":bearish?"BEARISH":"NEUTRAL";
+  const momentum=last.c>prev.c?"UP":last.c<prev.c?"DOWN":"FLAT";
+  const overextended=Math.abs(last.c-e20.at(-1))>.0008;
+  const rrData=readRisk();
+  const riskValid=rrData.valid && rrData.rr>=2;
+  // Demo-only heuristics, not a validated predictive strategy.
+  const longScore=(bullish?1:0)+(momentum==="UP"?1:0)+(goodCandle?1:0)+(rsi>=35&&rsi<=68?1:0)+(!overextended?1:0);
+  const shortScore=(bearish?1:0)+(momentum==="DOWN"?1:0)+(goodCandle?1:0)+(rsi>=32&&rsi<=65?1:0)+(!overextended?1:0);
+  const side=longScore>shortScore?"BUY":shortScore>longScore?"SELL":"WAIT", score=Math.max(longScore,shortScore);
+  const valid=side!=="WAIT" && score>=4 && riskValid && rsi>30 && rsi<70 && !overextended;
+  engines={
+    sniper:{signal:valid&&score===5?side:"WAIT",score:score*20,reason:valid&&score===5?"Simulated conditions pass prototype checks.":"Requires stronger alignment; no A+ setup confirmed."},
+    scalp:{signal:valid&&score>=4?side:"WAIT",score:score*20,reason:valid?"Simulated momentum and candle checks pass.":"Momentum/quality/risk checks did not all pass."},
+    gate:{signal:valid?side:"BLOCKED",score:valid?"PASS":"BLOCKED",reason:valid?"Prototype checks passed; still simulation only.":"Gate blocked: check risk/reward, RSI, extension and score."}
+  };
+  lastAnalysis={trend,rsi,momentum,goodCandle,overextended,rr:rrData.rr,riskValid,side,score,valid,entry:current};
+  updateEngines();updateChecks();updateTop();updateNotes();
+}
+function readRisk(){
+  const balance=Number($("balance").value),riskPct=Number($("risk").value),entry=Number($("entry").value),stop=Number($("stop").value),target=Number($("target").value),side=$("side").value;
+  const stopPips=Math.abs(entry-stop)*10000, rewardPips=(side==="BUY"?target-entry:entry-target)*10000, stopCorrect=side==="BUY"?stop<entry&&target>entry:stop>entry&&target<entry;
+  const rr=stopPips>0?rewardPips/stopPips:0, riskAmount=balance*riskPct/100, lots=stopPips>0?riskAmount/(stopPips*10):0;
+  const valid=balance>0&&riskPct>0&&riskPct<=1&&entry>0&&stopPips>0&&stopCorrect&&rewardPips>0;
+  $("riskAmount").textContent="$"+(Number.isFinite(riskAmount)?riskAmount:0).toFixed(2);
+  $("rr").textContent=Number.isFinite(rr)?rr.toFixed(2)+"R":"—";
+  $("lots").textContent=Number.isFinite(lots)?lots.toFixed(3):"—";
+  const ok=valid&&rr>=2;
+  $("riskValidation").textContent=ok?"VALID":"INVALID";$("riskValidation").className=ok?"green":"red";
+  return {balance,riskPct,entry,stop,target,side,stopPips,rewardPips,rr,riskAmount,lots,valid};
+}
+function updateEngines(){
+  [["sniper",engines.sniper],["scalp",engines.scalp],["gate",engines.gate]].forEach(([k,v])=>{
+    $(k+"Signal").textContent=v.signal;$(k+"Signal").className="signal "+(v.signal==="BUY"?"green":v.signal==="SELL"?"red":"amber");
+    $(k+"Reason").textContent=v.reason;$(k+"Score").textContent=typeof v.score==="number"?v.score+"/100":v.score;
   });
-
-  renderTrades();
-});
-
-$("clearTrades").addEventListener("click", () => {
-  if (confirm("Clear all simulated journal entries?")) {
-    trades = [];
-    renderTrades();
-  }
-});
+}
+function updateChecks(){
+  const a=lastAnalysis, items=[
+    ["Trend estimate",a.trend,"pending"],
+    ["M5 momentum",a.momentum,"pending"],
+    ["Candle body quality",a.goodCandle?"PASS":"FAIL",a.goodCandle?"pass":"fail"],
+    ["RSI protection",a.rsi>30&&a.rsi<70?`PASS (${a.rsi.toFixed(1)})`:`BLOCK (${a.rsi.toFixed(1)})`,a.rsi>30&&a.rsi<70?"pass":"fail"],
+    ["EMA extension",a.overextended?"BLOCK":"PASS",a.overextended?"fail":"pass"],
+    ["Risk/reward ≥ 1:2",a.rr>=2?`PASS (${a.rr.toFixed(2)}R)`:`BLOCK (${a.rr.toFixed(2)}R)`,a.rr>=2?"pass":"fail"],
+    ["Risk ≤ 1%",a.riskValid?"PASS":"BLOCK",a.riskValid?"pass":"fail"],
+    ["Broker connection","NOT CONNECTED","pending"]
+  ];
+  $("checks").innerHTML=items.map(([name,val,cls])=>`<div class="check"><span>${name}</span><span class="status ${cls}">${val}</span></div>`).join("");
+}
+function updateTop(){
+  const any=Object.values(engines).some(e=>e.signal==="BUY"||e.signal==="SELL");
+  $("verdict").textContent=any?"SIGNAL — SIM ONLY":"STAY OUT";
+  $("verdict").className="big "+(any?"green":"amber");
+  $("verdictDetail").textContent=any?"Prototype criteria passed; no broker order exists.":"No setup currently passes all prototype gates.";
+  $("equity").textContent="$"+Number(state.balance).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  const wins=state.trades.filter(t=>t.result==="WIN").length,losses=state.trades.filter(t=>t.result==="LOSS").length;
+  $("record").textContent=`${wins}W / ${losses}L`;
+  $("winrate").textContent=`Win rate: ${wins+losses?Math.round(wins/(wins+losses)*100)+"%":"—"}`;
+  renderJournal();
+}
+function updateNotes(){
+  const a=lastAnalysis;
+  $("notes").innerHTML=`<p>Current simulated estimate: <strong>${a.trend}</strong>; RSI ${a.rsi.toFixed(1)}; momentum ${a.momentum}.</p><p>EMA extension: <strong class="${a.overextended?"red":"green"}">${a.overextended?"EXTENDED":"within prototype limit"}</strong>.</p><p>These are simple demonstration heuristics. They are not trained AI, a backtested edge, a live market feed, or a promise of profit.</p>`;
+}
+function explainEngine(which){
+  const map={sniper:"A+ Sniper needs the strongest prototype score plus valid risk settings. It is intentionally selective.",scalp:"Elite Scalper checks short-term EMA direction, last-candle momentum, candle body quality, RSI and extension.",gate:"Trade Gate blocks a signal if risk inputs are invalid, RR is below 1:2, RSI is outside 30–70, EMA is too extended, or score is insufficient."};
+  alert(map[which]+"\n\nCurrent state: "+engines[which].signal+"\nThis prototype uses simulated data only.");
+}
+function renderJournal(){
+  const body=$("journal");
+  if(!state.trades.length){body.innerHTML='<tr><td colspan="8" class="empty">No simulated trades recorded.</td></tr>';return;}
+  body.innerHTML=state.trades.slice().reverse().map(t=>`<tr><td>${t.time}</td><td class="${t.side==="BUY"?"green":"red"}">${t.side}</td><td>${t.entry.toFixed(5)}</td><td>${t.stop.toFixed(5)}</td><td>${t.target.toFixed(5)}</td><td class="${t.result==="WIN"?"green":"red"}">${t.result}</td><td class="${t.pnl>=0?"green":"red"}">${t.pnl>=0?"+":""}$${t.pnl.toFixed(2)}</td><td>${t.reason}</td></tr>`).join("");
+}
+function recordSimulatedTrade(){
+  const r=readRisk();
+  if(!r.valid||r.rr<2){alert("Trade not recorded: fix risk inputs and set valid direction/SL/TP with RR ≥ 1:2.");return;}
+  if(!lastAnalysis || !lastAnalysis.valid){alert("Trade not recorded: the simulated strategy gate says STAY OUT. This is not a broker order.");return;}
+  const win=Math.random()<.5, pnl=win?r.riskAmount*r.rr:-r.riskAmount;
+  const t={time:istTime(),side:r.side,entry:r.entry,stop:r.stop,target:r.target,result:win?"WIN":"LOSS",pnl,reason:"Simulated outcome only"};
+  state.trades.push(t);state.balance+=pnl;saveState();updateTop();
+  alert("Simulated result recorded: "+t.result+" ("+(pnl>=0?"+":"")+"$"+pnl.toFixed(2)+"). No order was sent to MT5.");
+}
+function bindRisk(){["balance","risk","entry","stop","target","side"].forEach(id=>$(id).addEventListener("input",()=>{readRisk();if(candles.length)analyse();}));}
+$("simulateTrade").addEventListener("click",recordSimulatedTrade);
+$("refresh").addEventListener("click",generateCandles);
+$("reset").addEventListener("click",()=>{if(confirm("Reset all locally saved simulated trades and equity?")){state={balance:1000,trades:[]};saveState();updateTop();}});
+document.querySelectorAll("[data-tf]").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll("[data-tf]").forEach(x=>x.classList.remove("active"));b.classList.add("active");timeframe=b.dataset.tf;generateCandles();}));
+window.addEventListener("resize",renderChart);
+tickClock();setInterval(tickClock,1000);bindRisk();generateCandles();updateTop();
 </script>
 </body>
 </html>
